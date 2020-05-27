@@ -13,24 +13,28 @@ export class SpotifyService {
     console.log('Spotify Service Listo');
    }
 
-  getNewReleases(){
+   getQuery( query: string){
+
+    const url = `https://api.spotify.com/v1/${ query }`;
 
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer BQD5FeJ32uZjts1tXbyoZ-48v7htu-fovjn0BRko3WUTmaqzsjo52maJgU7oC1Fz5e2O2Iq0gA4S-ixkibQ'
+      'Authorization': 'Bearer BQBUllyBKccDiaZUIY7jZngKgHyYC3bXPChy1bGKgyXIjj0amkCDyMekNEHQcVFI-PvWDzR5-39IP3vvwOY'
     });
 
-    return this.http.get('https://api.spotify.com/v1/browse/new-releases?limit=20', { headers })
+    return this.http.get(url, { headers });
+
+   }
+
+  getNewReleases(){
+
+    return this.getQuery( 'browse/new-releases?limit=20' )
               .pipe( map( data => data['albums'].items));
 
   }
 
   getArtista( termino: string) {
    
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer BQD5FeJ32uZjts1tXbyoZ-48v7htu-fovjn0BRko3WUTmaqzsjo52maJgU7oC1Fz5e2O2Iq0gA4S-ixkibQ'
-    });
-
-    return this.http.get(`https://api.spotify.com/v1/search?q=${ termino }&type=artist&limit=15`, { headers })
+    return this.getQuery( `search?q=${ termino }&type=artist&limit=15` )
               .pipe( map( data => data['artists'].items));
 
   }
